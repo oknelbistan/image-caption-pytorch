@@ -38,9 +38,11 @@ def main():
 
     device = torch.device('cuda') if torch.cuda.is_available() else torch.device('cpu')
 
-    train_data = Flickr8KDataset(IMAGES_PATH, CAPTION_FILE, transform=TRANSFORM)
-    train_dataloader = DataLoader(train_data, batch_size=BATCH_SIZE, shuffle=True, drop_last=True)
+    dataset = Flickr8KDataset(IMAGES_PATH, CAPTION_FILE, transform=TRANSFORM)
 
+    train_sampler, valid_sampler = dataset.split_dataset()
+    train_dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, sampler=train_sampler, drop_last=True)
+    valid_dataloader = DataLoader(dataset, batch_size=BATCH_SIZE, sampler=valid_sampler)
     
     loss_fn = torch.nn.CrossEntropyLoss()
     

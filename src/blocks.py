@@ -67,7 +67,7 @@ class TransformerEncoderBlock(nn.Module):
 
         )
 
-        output = self.layernorm_2(output + attention_output) # output type /Tensor attention_output /tuple
+        output = self.layernorm_2(output + attention_output[0]) # output type /Tensor attention_output /tuple
 
         return output
     

@@ -84,8 +84,18 @@ class Flickr8KDataset(Dataset):
         
         return re.sub("[%s]" % re.escape(strip_chars), "", lowercase)
     
-    def TextVectorization():
-        pass        
+    def split_dataset(self,rate=0.2, shuffle=True,
+                      seed=42):
+        dataset_size = len(self.image_filenames)
+        indices = list(range(dataset_size))
+        split = int(np.floor(rate * dataset_size))
+        if shuffle:
+            np.random.seed(seed=seed)
+            np.random.shuffle(indices)
+        
+        train_indices, val_indices = indices[split:], indices[:split]
+        
+        return train_indices, val_indices
 
     def __len__(self):
         return len(self.image_filenames)
